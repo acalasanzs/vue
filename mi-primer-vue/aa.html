@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="es-es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Factura @Model.IDENTIFICADOR</title>
+    <link href="bootstrap4.4.1.min.css" rel="stylesheet" />
+</head>
+<body>
+    <table class="w-100 h1 text-dark">
+        <tr>
+            <td>
+                <h1 style="vertical-align: middle;">FACTURA</h1>
+            </td>
+            <td class="w-100">
+                <img style="vertical-align: middle; width: 33%;" src="logo.png" class="d-inline ml-auto" />
+            </td>
+        </tr>
+    </table>
+    <hr />
+    <table class="d-print-table mb-2 w-100">
+        <tr class="d-print-table-row">
+            <td class="d-print-table-cell h-100">
+                <div><strong class="me-1">Nº Factura</strong></div>
+                <div><strong class="me-1">Fecha</strong></div>
+                <div><strong class="me-1">Validez</strong></div>
+                <div><strong class="me-1">Comercial</strong></div>
+                <div><strong class="me-1">Caja</strong>@(core.Modal<CajasViewModel>(Model.IDCAJA).NOMBRE)</div>
+                <div><strong class="me-1">Plazo entrega</strong></div>
+                <div><strong class="me-1">Forma pago</strong></div>
+            </td>
+            <td class="d-print-table-cell h-100">
+                <div><strong>La empresa</strong></div>
+                <div>asdasddas</div>
+                <div>asdadsasd</div>
+                <div>asdasd</div>
+                <div>asddas</div>
+                <div>adsasdasd</div>
+            </td>
+        </tr>
+
+    </table>
+    <table class="table table-striped">
+        <tr>
+            <th scope="col">Ítem</th>
+            <th scope="col">Descripción</th>
+            <th scope="col">Uds.</th>
+            <th scope="col">Precio unitario</th>
+            <th scope="col">Subtotal</th>
+            <th scope="col">Descuento</th>
+            <th scope="col">Total</th>
+        </tr>
+        @{
+            int i = 0;
+            decimal total = 0m;
+        }
+        @foreach(var ticket in core.Tabla<TicketsViewModel>(filtro: $"{nameof(TicketsViewModel.IDTICKET)}={Model.IDTICKET}"))
+        {
+            i++;
+            <tr>
+                <td scope="row">@i</td>
+                <td>@(core.Modal<ProductosViewModel>(ticket.IDPRODUCTO).NOMBRE)</td>
+                <td>@(ticket.CANTIDAD)</td>
+                <td>@(Math.Round((decimal)(ticket.PRECIO * (100 - ticket.DESCUENTO) / 100)!,2))€</td>
+                <td>@(Math.Round((decimal)((ticket.PRECIO * ticket.CANTIDAD) * (100 - ticket.DESCUENTO) / 100)!, 2))€</td>
+                <td>@(ticket.DESCUENTO)%</td>
+                <td>@(ticket.PRECIO * ticket.CANTIDAD)€</td>
+            </tr>
+             total += (decimal)(ticket.PRECIO * ticket.CANTIDAD)!;
+            
+        }
+        <tr>
+            <td scope="row"  colspan="6">TOTAL:</td>
+            <td>@(total)€</td>
+        </tr>
+    </table>
+    <div class="px-3 mt-1">
+        <p class="mb-2">
+            Incluye las siguientes aplicaciones:
+            ...
+        
+        </p>
+        <p class="mb-2">
+            Características:
+            -
+            -
+            -
+        </p>
+        <p class="mb-2">
+            <strong class="d-block">Fecha de Inicio: @($"{DateTime.Now:dd/mm/yy}")</strong>
+            <strong class="d-block">Fecha de Término: @($"{DateTime.Now:dd/mm/yy}")</strong>
+        </p>
+        <p>
+            23-23-23-23-2
+            23-23-23-23-2
+        </p>
+    </div>
+</body>
+</html>
