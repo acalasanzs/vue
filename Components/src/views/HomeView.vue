@@ -10,16 +10,13 @@ const inicio = ref(0);
 const loaded = ref(false);
 const opacity = ref(0);
 const opacityN = ref(0);
+const disabled = ref(false);
 let overflow = false;
 function clear() {
   return `repeat( ${Math.floor(Math.sqrt(quantity.value))}, 1fr)`;
 }
 const change = (val) => {
-  if (parseInt(val) - quantity.value < 0) {
-    inicio.value += parseInt(val) - quantity.value;
-  } else {
-    fin.value += parseInt(val) - quantity.value;
-  }
+  fin.value += parseInt(val) - quantity.value;
   quantity.value = parseInt(val);
   update();
   Cquantity.value = clear();
@@ -55,6 +52,7 @@ const data = ref([]);
 const update = async () => {
   try {
     if (quantity.value) {
+      disabled.value = true;
       const res = await fetch(
         `https://jsonplaceholder.typicode.com/photos?_start=${inicio.value}${
           fin.value ? "&_end=" + fin.value : ""
@@ -66,6 +64,7 @@ const update = async () => {
         fin.value -= quantity.value;
         fin.value += data.value.length;
       }
+      disabled.value = false;
     } else {
       data.value = Array(0);
     }
@@ -97,7 +96,7 @@ onMounted(() => {
         <button
           class="btn btn-outline-primary h-auto d-block my-2"
           @click="prev"
-          :disabled="inicio <= 0"
+          :disabled="inicio <= 0 || disabled"
         >
           &langle; Prev
         </button>
@@ -109,7 +108,7 @@ onMounted(() => {
         <button
           class="btn btn-outline-primary h-auto d-block my-2"
           @click="next"
-          :disabled="data.length < quantity"
+          :disabled="data.length < quantity || disabled"
         >
           Next &rangle;
         </button>
