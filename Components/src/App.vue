@@ -13,7 +13,7 @@ import { RouterLink } from "vue-router";
           class="d-inline-block align-top me-2"
           alt=""
         />
-        Pokestrap 4/5
+        GalleryStrap 4/5
       </a>
       <div class="btn-group" role="group">
         <router-link activeClass="active" to="/" class="btn btn-outline-primary"
@@ -21,13 +21,7 @@ import { RouterLink } from "vue-router";
         >
         <router-link
           activeClass="active"
-          to="/pokemons"
-          class="btn btn-outline-secondary"
-          >PokeDex</router-link
-        >
-        <router-link
-          activeClass="active"
-          to="/pokemons"
+          to="/saved"
           class="btn btn-outline-success"
           >Saved</router-link
         >
